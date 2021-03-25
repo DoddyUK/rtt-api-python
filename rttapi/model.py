@@ -97,3 +97,26 @@ class Location:
         self.display_as: str = None
 
         self.service_location: str = None
+
+
+class Service:
+    def __init__(self):
+        self.service_uid: str = None
+        self.run_date: datetime.date = None
+        self.service_type: str = None
+        self.is_passenger: bool = False
+        self.train_identity_detailed: str = None
+        self.power_type_detailed: str = None
+        self.train_class: str = None
+        self.sleeper: str = None
+
+        self.atoc_code: str = "ZZ"
+        self.atoc_name: str = "Unknown"
+
+        self.performance_monitored: bool = False
+        self.origin: List[RttPair] = []
+        self.destination: List[RttPair] = []
+        self.locations: List[Location] = []
+
+        self.realtime_activated: bool = False
+        self.running_identity: str = None
