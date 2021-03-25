@@ -5,6 +5,9 @@ def parse_search(json) -> SearchResult:
     if not all(key in json for key in ('location', 'filter', 'services')):
         raise ValueError("JSON object missing required keys")
 
+    if json['location'] is None:
+        raise ValueError("location is None")
+
     out = SearchResult()
     out.location = parse_location_detail(json['location'])
 
