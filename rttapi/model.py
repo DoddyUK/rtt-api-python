@@ -1,10 +1,6 @@
 import datetime
 from typing import List
 
-'''
-This class isn't defined in the RTT API but forms the first part
-of all search API calls
-'''
 class LocationDetail:
     def __init__(self, name: str, crs: str, tiploc: List[str]):
         self.name = name
@@ -32,7 +28,10 @@ class LocationContainer:
 
         self.countdown_minutes: int = -1
 
-
+'''
+This class isn't defined in the RTT API but forms the first part
+of all search API calls
+'''
 class SearchResult:
     def __init__(self, location: LocationDetail, search_filter: LocationDetail, services: List[LocationContainer]):
         self.location = location
