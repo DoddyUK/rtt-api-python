@@ -58,9 +58,9 @@ class SearchResult:
 '''
 class RttPair:
     def __init__(self):
-        self.tiploc_detailed: str = None
+        self.tiploc: str = None
         self.description: str = None
-        self.working_time_detailed: str = None
+        self.working_time: str = None
         self.public_time: str = None
 
 
