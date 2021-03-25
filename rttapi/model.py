@@ -7,14 +7,6 @@ class LocationDetail:
         self.crs = crs
         self.tiploc = tiploc
 
-    def __str__(self):
-        return "\n      LocationDetail:\n" \
-               "            name: {}\n" \
-               "            crs: {}\n" \
-               "            toploc: {}\n"\
-            .format(self.name, self.crs, self.tiploc)
-
-
 class LocationContainer:
     def __init__(self):
         self.location_detail = None

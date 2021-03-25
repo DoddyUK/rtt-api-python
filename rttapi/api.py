@@ -1,4 +1,5 @@
 import requests
+import rttapi.parser as parser
 from requests.auth import HTTPBasicAuth
 
 
@@ -20,7 +21,7 @@ Makes network requests to the Realtime Trains API
 
 Requests are authenticated via HTTPBasicAuth, with credentials passed in as a pair.
 '''
-class RttApi:
+class _Api:
 
     urlBase = "https://api.rtt.io/api/v1"
 
@@ -38,3 +39,13 @@ class RttApi:
         )
         return _request_basic_auth(credentials, url)
 
+
+
+class RttApi:
+    def __init__(self, username: str, password: str):
+        self.credentials = (username, password)
+        self.__api = _Api()
+
+    def search_station_departures(self, station_code: str):
+        json = self.__api.fetch_station_info(self.credentials, station_code)
+        return parser.parse_search(json)
