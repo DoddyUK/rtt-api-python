@@ -7,6 +7,13 @@ class LocationDetail:
         self.crs = crs
         self.tiploc = tiploc
 
+    def __str__(self):
+        return "\n      LocationDetail:\n" \
+               "            name: {}\n" \
+               "            crs: {}\n" \
+               "            toploc: {}\n"\
+            .format(self.name, self.crs, self.tiploc)
+
 
 class LocationContainer:
     def __init__(self):
@@ -33,10 +40,17 @@ This class isn't defined in the RTT API but forms the first part
 of all search API calls
 '''
 class SearchResult:
-    def __init__(self, location: LocationDetail, search_filter: LocationDetail, services: List[LocationContainer]):
-        self.location = location
-        self.filter = search_filter
-        self.services = services
+    def __init__(self):
+        self.location: LocationDetail = None
+        self.filter: LocationDetail = None
+        self.services: List[LocationContainer] = []
+
+    def __str__(self):
+        return "SearchResult:\n" \
+               "    location: {}\n" \
+               "    filter: {}\n" \
+               "    services: {}\n"\
+            .format(self.location, self.filter, self.services)
 
 '''
  Confusingly, the RTT API refers to this class as a Pair. 
