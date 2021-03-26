@@ -73,27 +73,30 @@ class Location:
         self.origin: List[Pair] = []
         self.destination: List[Pair] = []
 
-        self.is_call_detailed: bool = False
+        self.is_call: bool = False
         self.is_call_public_simple: bool = False
 
         self.realtime_arrival: str = None
         self.realtime_arrival_actual: bool = False
         self.realtime_arrival_no_report: bool = False
-        self.realtime_wtt_arrival_lateness_detailed: int = 0
-        self.realtime_gbbt_arrival_lateness_detailed: int = 0
+        self.realtime_wtt_arrival_lateness: int = 0
+        self.realtime_gbbt_arrival_lateness: int = 0
 
         self.realtime_departure: str = None
         self.realtime_departure_actual: bool = False
         self.realtime_departure_no_report: bool = False
-        self.realtime_wtt_departure_lateness_detailed: int = 0
-        self.realtime_gbbt_departure_lateness_detailed: int = 0
+        self.realtime_wtt_departure_lateness: int = 0
+        self.realtime_gbbt_departure_lateness: int = 0
 
         self.platform: str = None
         self.platform_confirmed: bool = False
         self.platform_changed: bool = False
 
-        self.line_detailed: str = None
-        self.line_confirmed_detailed: bool = False
+        self.line: str = None
+        self.line_confirmed: bool = False
+
+        self.path: str = None
+        self.path_confirmed: bool = False
 
         self.cancel_reason_code: str = None
         self.cancel_reason_short_text: str = None
@@ -110,8 +113,8 @@ class Service:
         self.run_date: datetime.date = None
         self.service_type: str = None
         self.is_passenger: bool = False
-        self.train_identity_detailed: str = None
-        self.power_type_detailed: str = None
+        self.train_identity: str = None
+        self.power_type: str = None
         self.train_class: str = None
         self.sleeper: str = None
 
