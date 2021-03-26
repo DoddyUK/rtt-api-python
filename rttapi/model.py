@@ -12,7 +12,7 @@ class LocationContainer:
         self.location_detail = None
         self.service_uid: str = None
         self.run_date: datetime.date = None
-        self.train_identity_detailed: str = None
+        self.train_identity: str = None
         self.running_identity: str = None
 
         self.atoc_code: str = "ZZ"
@@ -22,8 +22,8 @@ class LocationContainer:
         self.is_passenger: bool = False
         self.planned_cancel: bool = False
 
-        self.origin: List[RttPair] = []
-        self.destination: List[RttPair] = []
+        self.origin: List[Pair] = []
+        self.destination: List[Pair] = []
 
         self.countdown_minutes: int = -1
 
@@ -48,7 +48,7 @@ class SearchResult:
  Confusingly, the RTT API refers to this class as a Pair. 
  Named it RttPair to avoid confusion with internal Python data type pair
 '''
-class RttPair:
+class Pair:
     def __init__(self):
         self.tiploc: str = None
         self.description: str = None
@@ -70,8 +70,8 @@ class Location:
         self.gbbt_booked_arrival: str = None
         self.gbbt_booked_departure: str = None
 
-        self.origin: List[RttPair] = []
-        self.destination: List[RttPair] = []
+        self.origin: List[Pair] = []
+        self.destination: List[Pair] = []
 
         self.is_call_detailed: bool = False
         self.is_call_public_simple: bool = False
@@ -119,8 +119,8 @@ class Service:
         self.atoc_name: str = "Unknown"
 
         self.performance_monitored: bool = False
-        self.origin: List[RttPair] = []
-        self.destination: List[RttPair] = []
+        self.origin: List[Pair] = []
+        self.destination: List[Pair] = []
         self.locations: List[Location] = []
 
         self.realtime_activated: bool = False

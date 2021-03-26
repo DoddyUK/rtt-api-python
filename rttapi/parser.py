@@ -1,4 +1,4 @@
-from rttapi.model import SearchResult, LocationDetail, RttPair, Location
+from rttapi.model import *
 
 
 def parse_search(json) -> SearchResult:
@@ -15,7 +15,7 @@ def parse_search(json) -> SearchResult:
         out.filter = parse_location_detail(json['filter'])
 
     if has_value(json, 'services'):
-        out.services = list(map(parse_location, json['services']))
+        out.services = list(map(parse_location_container, json['services']))
 
     return out
 
@@ -29,11 +29,11 @@ def parse_location_detail(json: dict) -> LocationDetail:
         json['tiploc']
     )
 
-def parse_pair(json: dict) -> RttPair:
+def parse_pair(json: dict) -> Pair:
     if not all(key in json for key in ('tiploc', 'description', 'workingTime', 'publicTime')):
         raise ValueError("JSON object missing required keys")
 
-    out = RttPair()
+    out = Pair()
     out.tiploc = json['tiploc']
     out.description = json['description']
     out.working_time = json['workingTime']
@@ -43,10 +43,41 @@ def parse_pair(json: dict) -> RttPair:
 
 def parse_location(json: dict) -> Location:
     out = Location()
-    location_detail = json['locationDetail']
 
-    if has_value(location_detail, 'origin'):
-        out.origin = list(map(parse_pair, location_detail['origin']))
+    if has_value(json, 'origin'):
+        out.origin = list(map(parse_pair, json['origin']))
+
+    return out
+
+def parse_location_container(json: dict) -> LocationContainer:
+    out = LocationContainer()
+
+    out.location_detail = parse_location(json['locationDetail'])
+    out.service_uid = json['serviceUid']
+    out.run_date = datetime.datetime.strptime(json['runDate'], "%Y-%m-%d").date()
+
+    if has_value(json, 'trainIdentity'):
+        out.train_identity = json['trainIdentity']
+    if has_value(json, 'runningIdentity'):
+        out.running_identity = json['runningIdentity']
+
+    out.atoc_code = json['atocCode']
+    out.atoc_name = json['atocName']
+    out.service_type = json['serviceType']
+    out.is_passenger = json['isPassenger']
+
+    if has_value(json, 'plannedCancel'):
+        out.planned_cancel = json['plannedCancel']
+
+    if has_value(json, 'origin'):
+        out.origin = list(map(parse_pair, json['origin']))
+
+    if has_value(json, 'destination'):
+        out.origin = list(map(parse_pair, json['destination']))
+
+    if has_value(json, 'countdownMinutes'):
+        out.countdown_minutes = list(map(parse_pair, json['countdownMinutes']))
+
 
     return out
 
