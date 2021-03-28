@@ -1,1 +1,4 @@
 scratch.py
+build/*
+dist/*
+rttapi.egg-info/*
