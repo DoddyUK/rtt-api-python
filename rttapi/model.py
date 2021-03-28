@@ -82,6 +82,9 @@ class Pair:
 
 
 class Location:
+    """
+    See https://www.realtimetrains.co.uk/about/developer/pull/docs/locationlist/ - This class is a mirror of the API
+    """
     def __init__(self):
         self.realtime_activated: bool = False
         self.tiploc: str = None
@@ -133,6 +136,9 @@ class Location:
 
 
 class Service:
+    """
+    See https://www.realtimetrains.co.uk/about/developer/pull/docs/locationlist/ - This class is a mirror of the API
+    """
     def __init__(self):
         self.service_uid: str = None
         self.run_date: datetime.date = None
