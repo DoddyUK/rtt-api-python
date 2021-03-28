@@ -163,15 +163,29 @@ def parse_location_container(json: dict) -> LocationContainer:
     out.run_date = datetime.datetime.strptime(json['runDate'], "%Y-%m-%d").date()
 
     out.train_identity = __assign_if_set(out.train_identity, json, 'trainIdentity')
-    out.running_identity = __assign_if_set(out.running_identity, json, 'runningIdentity')
+
+    out.running_identity = __assign_if_set(
+        out.running_identity,
+        json,
+        'runningIdentity'
+    )
 
     out.atoc_code = json['atocCode']
     out.atoc_name = json['atocName']
     out.service_type = json['serviceType']
     out.is_passenger = json['isPassenger']
 
-    out.planned_cancel = __assign_if_set(out.planned_cancel, json, 'plannedCancel')
-    out.countdown_minutes = __assign_if_set(out.countdown_minutes, json, 'countdownMinutes')
+    out.planned_cancel = __assign_if_set(
+        out.planned_cancel,
+        json,
+        'plannedCancel'
+    )
+
+    out.countdown_minutes = __assign_if_set(
+        out.countdown_minutes,
+        json,
+        'countdownMinutes'
+    )
 
     if _has_value(json, 'origin'):
         out.origin = list(map(parse_pair, json['origin']))
@@ -180,6 +194,59 @@ def parse_location_container(json: dict) -> LocationContainer:
         out.origin = list(map(parse_pair, json['destination']))
 
     return out
+
+def parse_service(json: dict):
+    """
+    Parses a given dictionary (converted from JSON) into a rttapi.model.Service object
+
+    :param json: The dictionary data to parse
+
+    :raises ValueError: When an expected key is missing
+
+    :return: A rttapi.model.Service representation of this data
+    """
+
+    out = Service()
+
+    out.service_uid = json['serviceUid']
+    out.run_date = datetime.datetime.strptime(json['runDate'], "%Y-%m-%d").date()
+    out.service_type = json['serviceType']
+    out.is_passenger = json['isPassenger']
+    out.train_identity = json['trainIdentity']
+    out.atoc_code = json['atocCode']
+    out.atoc_name = json['atocName']
+
+    out.power_type = __assign_if_set(
+        out.power_type, json, 'powerType'
+    )
+    out.train_class = __assign_if_set(
+        out.train_class, json, 'trainClass'
+    )
+    out.sleeper = __assign_if_set(
+        out.sleeper, json, 'sleeper'
+    )
+    out.performance_monitored = __assign_if_set(
+        out.performance_monitored, json, 'performanceMonitored'
+    )
+
+    if _has_value(json, 'origin'):
+        out.origin = list(map(parse_pair, json['origin']))
+
+    if _has_value(json, 'destination'):
+        out.destination = list(map(parse_pair, json['destination']))
+
+    if _has_value(json, 'locations'):
+        out.origin = list(map(parse_location, json['locations']))
+
+    out.realtime_activated = __assign_if_set(
+        out.realtime_activated, json, 'realtimeActivated'
+    )
+
+    out.running_identity = __assign_if_set(
+        out.realtime_activated, json, 'runningIdentity'
+    )
+
+
 
 def _has_value(json, key):
     """
@@ -194,10 +261,12 @@ def _has_value(json, key):
 
 def __assign_if_set(old_val, json, key):
     """
-    Helper method for returning the value of a dictionary entry if it exists, and returning a default value if no
+    Helper method for returning the value of a dictionary entry if it exists,
+    and returning a default value if not
 
     :param old_val: The default to return if key is not found in json.
-                    Typically the current assignment of the variable this function is being used against.
+                    Typically the current assignment of the variable this
+                    function is being used against.
     :param json:
     :param key:
 
