@@ -81,7 +81,7 @@ def parse_location(json: dict) -> Location:
 
     :return: A rttapi.model.Location representation of the JSON data.
     """
-    if not all(key in json for key in 'crs'):
+    if 'crs' not in json:
         raise ValueError("JSON object missing required keys")
 
     out = Location()
