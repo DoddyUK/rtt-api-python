@@ -1,7 +1,16 @@
 from rttapi.model import *
 
 
-def parse_search(json) -> SearchResult:
+def parse_search(json: dict) -> SearchResult:
+    """
+    Parses the root JSON object from a station search into a rttapi.model.SearchResult representation of the JSON data.
+
+    :param json: The JSON data retrieved from the API, as a dictionary
+
+    :raises ValueError: When an expected key is missing
+
+    :return: A rttapi.model.SearchResult representation of the JSON data.
+    """
     if not all(key in json for key in ('location', 'filter', 'services')):
         raise ValueError("JSON object missing required keys")
 
@@ -23,6 +32,15 @@ def parse_search(json) -> SearchResult:
     return out
 
 def parse_location_detail(json: dict) -> LocationDetail:
+    """
+    Parses a location detail JSON object from a station search into a rttapi.model.LocationDetail representation of the JSON data.
+
+    :param json: The JSON data retrieved from the API, as a dictionary
+
+    :raises ValueError: When an expected key is missing
+
+    :return: A rttapi.model.LocationDetail representation of the JSON data.
+    """
     if not all(key in json for key in ('name', 'crs', 'tiploc')):
         raise ValueError("JSON object missing required keys")
 
@@ -33,6 +51,15 @@ def parse_location_detail(json: dict) -> LocationDetail:
     )
 
 def parse_pair(json: dict) -> Pair:
+    """
+    Parses a station/time Pair from JSON data
+
+    :param json: The JSON data retrieved from the API, as a dictionary
+
+    :raises ValueError: When an expected key is missing
+
+    :return: A rttapi.model.Pair representation of the JSON data.
+    """
     if not all(key in json for key in ('tiploc', 'description', 'workingTime', 'publicTime')):
         raise ValueError("JSON object missing required keys")
 
@@ -45,6 +72,18 @@ def parse_pair(json: dict) -> Pair:
     return out
 
 def parse_location(json: dict) -> Location:
+    """
+    Parses a location data JSON object from a station search into a rttapi.model.Location representation of the JSON data.
+
+    :param json: The JSON data retrieved from the API, as a dictionary
+
+    :raises ValueError: When an expected key is missing
+
+    :return: A rttapi.model.Location representation of the JSON data.
+    """
+    if 'crs' not in json:
+        raise ValueError("JSON object missing required keys")
+
     out = Location()
 
     out.realtime_activated = __assign_if_set(out.realtime_activated, json, 'realtimeActivated')
@@ -59,10 +98,10 @@ def parse_location(json: dict) -> Location:
     out.gbbt_booked_arrival = __assign_if_set(out.gbbt_booked_arrival, json, 'gbbtBookedArrival')
     out.gbbt_booked_departure = __assign_if_set(out.gbbt_booked_departure, json, 'gbbtBookedDeparture')
 
-    if has_value(json, 'origin'):
+    if _has_value(json, 'origin'):
         out.origin = list(map(parse_pair, json['origin']))
 
-    if has_value(json, 'destination'):
+    if _has_value(json, 'destination'):
         out.destination = list(map(parse_pair, json['destination']))
 
     out.realtime_arrival = __assign_if_set(out.realtime_arrival, json, 'realtimeArrival')
@@ -105,6 +144,18 @@ def parse_location(json: dict) -> Location:
     return out
 
 def parse_location_container(json: dict) -> LocationContainer:
+    """
+    Parses a given dictionary (converted from JSON) into a rttapi.model.LocationContainer object
+
+    :param json: The dictionary data to parse
+
+    :raises ValueError: When an expected key is missing
+
+    :return: A rttapi.model.LocationContainer representation of this data
+    """
+    if not all(key in json for key in ('serviceUid', 'atocCode', 'atocName', 'serviceType', 'isPassenger')):
+        raise ValueError("JSON object missing required keys")
+
     out = LocationContainer()
 
     out.location_detail = parse_location(json['locationDetail'])
@@ -122,18 +173,36 @@ def parse_location_container(json: dict) -> LocationContainer:
     out.planned_cancel = __assign_if_set(out.planned_cancel, json, 'plannedCancel')
     out.countdown_minutes = __assign_if_set(out.countdown_minutes, json, 'countdownMinutes')
 
-    if has_value(json, 'origin'):
+    if _has_value(json, 'origin'):
         out.origin = list(map(parse_pair, json['origin']))
 
-    if has_value(json, 'destination'):
+    if _has_value(json, 'destination'):
         out.origin = list(map(parse_pair, json['destination']))
 
     return out
 
-def has_value(json, key):
+def _has_value(json, key):
+    """
+    Helper method for determining if a key exists within a given dictionary
+
+    :param json: The JSON data (as a dict) to search through
+    :param key: The key to search for
+
+    :return: True if key is found in json, False if not.
+    """
     return key in json and json[key] is not None
 
 def __assign_if_set(old_val, json, key):
+    """
+    Helper method for returning the value of a dictionary entry if it exists, and returning a default value if no
+
+    :param old_val: The default to return if key is not found in json.
+                    Typically the current assignment of the variable this function is being used against.
+    :param json:
+    :param key:
+
+    :return:
+    """
     if key in json and json[key] is not None:
         return json[key]
     else:

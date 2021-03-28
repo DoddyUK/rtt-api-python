@@ -2,7 +2,16 @@ import datetime
 from typing import List
 
 class LocationDetail:
+    """
+    Detail of the queried station
+    """
     def __init__(self, name: str, crs: str, tiploc: List[str]):
+        """
+        Constructor
+        :param name: The name of the station
+        :param crs: The 3-letter Computer Reservation System code (e.g. 'CLJ')
+        :param tiploc: The timing point location (TIPLOC) code(s) for this station. May be a string or a list[string].
+        """
         self.name = name
         self.crs = crs
         self.tiploc = tiploc
@@ -27,15 +36,20 @@ class LocationContainer:
 
         self.countdown_minutes: int = -1
 
-'''
-This class isn't defined in the RTT API but forms the first part
-of all search API calls
-'''
 class SearchResult:
+    """
+    This class isn't defined in the RTT API but forms the first part
+    of all search API calls
+    """
     def __init__(self):
         self.location: LocationDetail = None
+        """ rttapi.model.LocationDetail object detailing the location searched for """
+
         self.filter: LocationDetail = None
+        """ rttapi.model.LocationDetail objects detailing the location searched for, nested within from & to properties """
+
         self.services: List[LocationContainer] = []
+        """" Array of rttapi.model.LocationContainer containing the location information and service metadata """
 
     def __str__(self):
         return "SearchResult:\n" \
@@ -44,19 +58,33 @@ class SearchResult:
                "    services: {}\n"\
             .format(self.location, self.filter, self.services)
 
-'''
- Confusingly, the RTT API refers to this class as a Pair. 
- Named it RttPair to avoid confusion with internal Python data type pair
-'''
+
 class Pair:
+    """
+     A TIPLOC/timing pair for a location
+    """
     def __init__(self):
         self.tiploc: str = None
+        """ The TIPLOC code for this timing point"""
+
         self.description: str = None
+        """ The name of this timing point"""
+
         self.working_time: str = None
+        """
+         Relevant working time for this location for the activity that this pair is performing. 
+         If it is in the context of an origin, it will be a departure time - for a destination it will be an arrival time. 
+         In format HHmmss e.g. 150330 
+        """
+
         self.public_time: str = None
+        """ As working_time but for the advertised public times. In format HHmm e.g. 1503 """
 
 
 class Location:
+    """
+    See https://www.realtimetrains.co.uk/about/developer/pull/docs/locationlist/ - This class is a mirror of the API
+    """
     def __init__(self):
         self.realtime_activated: bool = False
         self.tiploc: str = None
@@ -108,6 +136,9 @@ class Location:
 
 
 class Service:
+    """
+    See https://www.realtimetrains.co.uk/about/developer/pull/docs/locationlist/ - This class is a mirror of the API
+    """
     def __init__(self):
         self.service_uid: str = None
         self.run_date: datetime.date = None
