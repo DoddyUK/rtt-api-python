@@ -78,7 +78,7 @@ class _Api:
             service_uid,
             service_date.strftime('%Y'),
             service_date.strftime('%m'),
-            service_date.strftime('%m')
+            service_date.strftime('%d')
         )
 
     def fetch_service_info_ymd(self, credentials: tuple, service_uid: str, year: str, month: str, day: str) -> dict:
