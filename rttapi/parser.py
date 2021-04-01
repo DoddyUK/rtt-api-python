@@ -206,6 +206,9 @@ def parse_service(json: dict):
     :return: A rttapi.model.Service representation of this data
     """
 
+    if 'error' in json:
+        raise ValueError(json['error'])
+
     out = Service()
 
     out.service_uid = json['serviceUid']

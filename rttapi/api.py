@@ -142,11 +142,29 @@ class RttApi:
         json = self.__api.fetch_station_departure_info(self.credentials, station_code)
         return parser.parse_search(json)
 
-    def fetch_service_info_datetime(self, credentials: tuple, service_uid: str, service_date: datetime.date) -> Service:
-        json = self.__api.fetch_service_info_datetime(credentials, service_uid, service_date)
+    def fetch_service_info_datetime(self, service_uid: str, service_date: datetime.date) -> Service:
+        """
+        Requests detailed information about a given service, using a datetime.date object to specify the running date
+
+        :param service_uid: The unique ID of the service
+        :param service_date: The running date of the service as a datetime.date object
+
+        :return: A model.Service object representing this service's details
+        """
+        json = self.__api.fetch_service_info_datetime(self.credentials, service_uid, service_date)
         return parser.parse_service(json)
 
 
-    def fetch_service_info_ymd(self, credentials: tuple, service_uid: str, service_year: str, service_month: str, service_day: str) -> Service:
-        json = self.__api.fetch_service_info_ymd(credentials, service_uid, service_year, service_month, service_day)
+    def fetch_service_info_ymd(self, service_uid: str, service_year: str, service_month: str, service_day: str) -> Service:
+        """
+        Requests detailed information about a given service, using year/month/day to specify the running date
+
+        :param service_uid: The unique ID of the service
+        :param service_year: The year component of the service's running date
+        :param service_month: The month component of the service's running date
+        :param service_day: The day component of the service's running date
+
+        :return: A model.Service object representing this service's details
+        """
+        json = self.__api.fetch_service_info_ymd(self.credentials, service_uid, service_year, service_month, service_day)
         return parser.parse_service(json)

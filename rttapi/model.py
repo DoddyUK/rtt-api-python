@@ -18,7 +18,7 @@ class LocationDetail:
 
 class LocationContainer:
     def __init__(self):
-        self.location_detail = None
+        self.location_detail: Location = None
         self.service_uid: str = None
         self.run_date: datetime.date = None
         self.train_identity: str = None
