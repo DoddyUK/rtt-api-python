@@ -95,8 +95,8 @@ def parse_location(json: dict) -> Location:
     out.wtt_booked_departure = __assign_if_set(out.wtt_booked_departure, json, 'wttBookedDeparture')
     out.wtt_booked_pass = __assign_if_set(out.wtt_booked_pass, json, 'wttBookedPass')
 
-    out.gbbt_booked_arrival = __assign_if_set(out.gbbt_booked_arrival, json, 'gbbtBookedArrival')
-    out.gbbt_booked_departure = __assign_if_set(out.gbbt_booked_departure, json, 'gbbtBookedDeparture')
+    out.gbtt_booked_arrival = __assign_if_set(out.gbtt_booked_arrival, json, 'gbttBookedArrival')
+    out.gbtt_booked_departure = __assign_if_set(out.gbtt_booked_departure, json, 'gbttBookedDeparture')
 
     if _has_value(json, 'origin'):
         out.origin = list(map(parse_pair, json['origin']))
@@ -108,13 +108,13 @@ def parse_location(json: dict) -> Location:
     out.realtime_arrival_actual = __assign_if_set(out.realtime_arrival_actual, json, 'realtimeArrivalActual')
     out.realtime_arrival_no_report = __assign_if_set(out.realtime_arrival_no_report, json, 'realtimeArrivalNoReport')
     out.realtime_wtt_arrival_lateness = __assign_if_set(out.realtime_wtt_arrival_lateness, json, 'realtimeWttArrivalLateness')
-    out.realtime_gbbt_arrival_lateness = __assign_if_set(out.realtime_gbbt_arrival_lateness, json, 'realtimeGbttArrivalLateness')
+    out.realtime_gbtt_arrival_lateness = __assign_if_set(out.realtime_gbtt_arrival_lateness, json, 'realtimeGbttArrivalLateness')
 
     out.realtime_departure = __assign_if_set(out.realtime_departure, json, 'realtimeDeparture')
     out.realtime_departure_actual = __assign_if_set(out.realtime_departure_actual, json, 'realtimeDepartureActual')
     out.realtime_departure_no_report = __assign_if_set(out.realtime_departure_no_report, json, 'realtimeDepartureNoReport')
     out.realtime_wtt_departure_lateness = __assign_if_set(out.realtime_wtt_departure_lateness, json, 'realtimeWttDepartureLateness')
-    out.realtime_gbbt_departure_lateness = __assign_if_set(out.realtime_gbbt_departure_lateness, json, 'realtimeGbttDepartureLateness')
+    out.realtime_gbtt_departure_lateness = __assign_if_set(out.realtime_gbtt_departure_lateness, json, 'realtimeGbttDepartureLateness')
 
     out.platform = __assign_if_set(out.platform, json, 'platform')
     out.platform_confirmed = __assign_if_set(out.platform_confirmed, json, 'platformConfirmed')
@@ -191,7 +191,7 @@ def parse_location_container(json: dict) -> LocationContainer:
         out.origin = list(map(parse_pair, json['origin']))
 
     if _has_value(json, 'destination'):
-        out.origin = list(map(parse_pair, json['destination']))
+        out.destination = list(map(parse_pair, json['destination']))
 
     return out
 
@@ -249,6 +249,7 @@ def parse_service(json: dict):
         out.realtime_activated, json, 'runningIdentity'
     )
 
+    return out
 
 
 def _has_value(json, key):

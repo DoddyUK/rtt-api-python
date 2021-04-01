@@ -95,8 +95,8 @@ class Location:
         self.wtt_booked_departure: str = None
         self.wtt_booked_pass: str = None
 
-        self.gbbt_booked_arrival: str = None
-        self.gbbt_booked_departure: str = None
+        self.gbtt_booked_arrival: str = None
+        self.gbtt_booked_departure: str = None
 
         self.origin: List[Pair] = []
         self.destination: List[Pair] = []
@@ -108,13 +108,13 @@ class Location:
         self.realtime_arrival_actual: bool = False
         self.realtime_arrival_no_report: bool = False
         self.realtime_wtt_arrival_lateness: int = 0
-        self.realtime_gbbt_arrival_lateness: int = 0
+        self.realtime_gbtt_arrival_lateness: int = 0
 
         self.realtime_departure: str = None
         self.realtime_departure_actual: bool = False
         self.realtime_departure_no_report: bool = False
         self.realtime_wtt_departure_lateness: int = 0
-        self.realtime_gbbt_departure_lateness: int = 0
+        self.realtime_gbtt_departure_lateness: int = 0
 
         self.platform: str = None
         self.platform_confirmed: bool = False
