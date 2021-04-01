@@ -217,8 +217,8 @@ class ParserTest(unittest.TestCase):
             'wttBookedArrival': '1251',
             'wttBookedDeparture': '1253',
             'wttBookedPass': '1255',
-            'gbbtBookedArrival': '1251',
-            'gbbtBookedDeparture': '1253',
+            'gbttBookedArrival': '1251',
+            'gbttBookedDeparture': '1253',
             'origin': [
                 {
                     'tiploc': 'VICTORIA',
