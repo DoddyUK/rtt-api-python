@@ -239,7 +239,7 @@ def parse_service(json: dict):
         out.destination = list(map(parse_pair, json['destination']))
 
     if _has_value(json, 'locations'):
-        out.origin = list(map(parse_location, json['locations']))
+        out.locations = list(map(parse_location, json['locations']))
 
     out.realtime_activated = __assign_if_set(
         out.realtime_activated, json, 'realtimeActivated'
