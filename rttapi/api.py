@@ -1,7 +1,7 @@
 import requests
 import datetime
 import rttapi.parser as parser
-from rttapi.model import SearchResult
+from rttapi.model import SearchResult, Service
 from requests.auth import HTTPBasicAuth
 
 
@@ -63,7 +63,7 @@ class _Api:
         return _request_basic_auth(credentials, url)
 
 
-    def fetch_service_info(self, credentials: tuple, service_uid: str, service_date: datetime.date) -> dict:
+    def fetch_service_info_datetime(self, credentials: tuple, service_uid: str, service_date: datetime.date) -> dict:
         """
         Requests the service information for a given service UID, including the list of intermediate stops
 
@@ -73,12 +73,33 @@ class _Api:
 
         :return: A rttapi.model.SearchResult object mirroring the JSON reply
         """
+        return self.fetch_service_info_ymd(
+            credentials,
+            service_uid,
+            service_date.strftime('%Y'),
+            service_date.strftime('%m'),
+            service_date.strftime('%d')
+        )
+
+    def fetch_service_info_ymd(self, credentials: tuple, service_uid: str, year: str, month: str, day: str) -> dict:
+        """
+        Requests the service information for a given service UID, including the list of intermediate stops
+
+        :param credentials: A username/password pair used for the HTTPBasicAuth challenge
+        :param service_uid: The unique identifier for the train service
+        :param year: Year of the service running date
+        :param month: Month of the service running date
+        :param day: Day of the service running date
+
+        :return: A rttapi.model.SearchResult object mirroring the JSON reply
+        """
+
         url = "{base}/json/service/{service_uid}/{year}/{month}/{day}".format(
             base=self.__urlBase,
             service_uid=service_uid,
-            year=service_date.strftime('%Y'),
-            month=service_date.strftime('%m'),
-            day=service_date.strftime('%d')
+            year=year,
+            month=month,
+            day=day
         )
         return _request_basic_auth(credentials, url)
 
@@ -120,3 +141,30 @@ class RttApi:
         """
         json = self.__api.fetch_station_departure_info(self.credentials, station_code)
         return parser.parse_search(json)
+
+    def fetch_service_info_datetime(self, service_uid: str, service_date: datetime.date) -> Service:
+        """
+        Requests detailed information about a given service, using a datetime.date object to specify the running date
+
+        :param service_uid: The unique ID of the service
+        :param service_date: The running date of the service as a datetime.date object
+
+        :return: A model.Service object representing this service's details
+        """
+        json = self.__api.fetch_service_info_datetime(self.credentials, service_uid, service_date)
+        return parser.parse_service(json)
+
+
+    def fetch_service_info_ymd(self, service_uid: str, service_year: str, service_month: str, service_day: str) -> Service:
+        """
+        Requests detailed information about a given service, using year/month/day to specify the running date
+
+        :param service_uid: The unique ID of the service
+        :param service_year: The year component of the service's running date
+        :param service_month: The month component of the service's running date
+        :param service_day: The day component of the service's running date
+
+        :return: A model.Service object representing this service's details
+        """
+        json = self.__api.fetch_service_info_ymd(self.credentials, service_uid, service_year, service_month, service_day)
+        return parser.parse_service(json)

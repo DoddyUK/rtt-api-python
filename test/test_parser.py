@@ -217,8 +217,8 @@ class ParserTest(unittest.TestCase):
             'wttBookedArrival': '1251',
             'wttBookedDeparture': '1253',
             'wttBookedPass': '1255',
-            'gbbtBookedArrival': '1251',
-            'gbbtBookedDeparture': '1253',
+            'gbttBookedArrival': '1251',
+            'gbttBookedDeparture': '1253',
             'origin': [
                 {
                     'tiploc': 'VICTORIA',
@@ -274,8 +274,8 @@ class ParserTest(unittest.TestCase):
         self.assertEqual('1251', actual.wtt_booked_arrival)
         self.assertEqual('1253', actual.wtt_booked_departure)
         self.assertEqual('1255', actual.wtt_booked_pass)
-        self.assertEqual('1251', actual.gbbt_booked_arrival)
-        self.assertEqual('1253', actual.gbbt_booked_departure)
+        self.assertEqual('1251', actual.gbtt_booked_arrival)
+        self.assertEqual('1253', actual.gbtt_booked_departure)
 
         # TODO check origin
         self.assertEqual(1, len(actual.origin))
@@ -287,13 +287,13 @@ class ParserTest(unittest.TestCase):
         self.assertEqual('1252', actual.realtime_arrival_actual)
         self.assertTrue(actual.realtime_arrival_no_report)
         self.assertEqual('3', actual.realtime_wtt_arrival_lateness)
-        self.assertEqual('4', actual.realtime_gbbt_arrival_lateness)
+        self.assertEqual('4', actual.realtime_gbtt_arrival_lateness)
 
         self.assertEqual('1253', actual.realtime_departure)
         self.assertEqual('1253', actual.realtime_departure_actual)
         self.assertTrue(actual.realtime_departure_no_report)
         self.assertEqual('1', actual.realtime_wtt_departure_lateness)
-        self.assertEqual('2', actual.realtime_gbbt_departure_lateness)
+        self.assertEqual('2', actual.realtime_gbtt_departure_lateness)
 
         self.assertEqual('2A', actual.platform)
         self.assertTrue(actual.platform_confirmed)

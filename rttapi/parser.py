@@ -95,8 +95,8 @@ def parse_location(json: dict) -> Location:
     out.wtt_booked_departure = __assign_if_set(out.wtt_booked_departure, json, 'wttBookedDeparture')
     out.wtt_booked_pass = __assign_if_set(out.wtt_booked_pass, json, 'wttBookedPass')
 
-    out.gbbt_booked_arrival = __assign_if_set(out.gbbt_booked_arrival, json, 'gbbtBookedArrival')
-    out.gbbt_booked_departure = __assign_if_set(out.gbbt_booked_departure, json, 'gbbtBookedDeparture')
+    out.gbtt_booked_arrival = __assign_if_set(out.gbtt_booked_arrival, json, 'gbttBookedArrival')
+    out.gbtt_booked_departure = __assign_if_set(out.gbtt_booked_departure, json, 'gbttBookedDeparture')
 
     if _has_value(json, 'origin'):
         out.origin = list(map(parse_pair, json['origin']))
@@ -108,13 +108,13 @@ def parse_location(json: dict) -> Location:
     out.realtime_arrival_actual = __assign_if_set(out.realtime_arrival_actual, json, 'realtimeArrivalActual')
     out.realtime_arrival_no_report = __assign_if_set(out.realtime_arrival_no_report, json, 'realtimeArrivalNoReport')
     out.realtime_wtt_arrival_lateness = __assign_if_set(out.realtime_wtt_arrival_lateness, json, 'realtimeWttArrivalLateness')
-    out.realtime_gbbt_arrival_lateness = __assign_if_set(out.realtime_gbbt_arrival_lateness, json, 'realtimeGbttArrivalLateness')
+    out.realtime_gbtt_arrival_lateness = __assign_if_set(out.realtime_gbtt_arrival_lateness, json, 'realtimeGbttArrivalLateness')
 
     out.realtime_departure = __assign_if_set(out.realtime_departure, json, 'realtimeDeparture')
     out.realtime_departure_actual = __assign_if_set(out.realtime_departure_actual, json, 'realtimeDepartureActual')
     out.realtime_departure_no_report = __assign_if_set(out.realtime_departure_no_report, json, 'realtimeDepartureNoReport')
     out.realtime_wtt_departure_lateness = __assign_if_set(out.realtime_wtt_departure_lateness, json, 'realtimeWttDepartureLateness')
-    out.realtime_gbbt_departure_lateness = __assign_if_set(out.realtime_gbbt_departure_lateness, json, 'realtimeGbttDepartureLateness')
+    out.realtime_gbtt_departure_lateness = __assign_if_set(out.realtime_gbtt_departure_lateness, json, 'realtimeGbttDepartureLateness')
 
     out.platform = __assign_if_set(out.platform, json, 'platform')
     out.platform_confirmed = __assign_if_set(out.platform_confirmed, json, 'platformConfirmed')
@@ -163,23 +163,94 @@ def parse_location_container(json: dict) -> LocationContainer:
     out.run_date = datetime.datetime.strptime(json['runDate'], "%Y-%m-%d").date()
 
     out.train_identity = __assign_if_set(out.train_identity, json, 'trainIdentity')
-    out.running_identity = __assign_if_set(out.running_identity, json, 'runningIdentity')
+
+    out.running_identity = __assign_if_set(
+        out.running_identity,
+        json,
+        'runningIdentity'
+    )
 
     out.atoc_code = json['atocCode']
     out.atoc_name = json['atocName']
     out.service_type = json['serviceType']
     out.is_passenger = json['isPassenger']
 
-    out.planned_cancel = __assign_if_set(out.planned_cancel, json, 'plannedCancel')
-    out.countdown_minutes = __assign_if_set(out.countdown_minutes, json, 'countdownMinutes')
+    out.planned_cancel = __assign_if_set(
+        out.planned_cancel,
+        json,
+        'plannedCancel'
+    )
+
+    out.countdown_minutes = __assign_if_set(
+        out.countdown_minutes,
+        json,
+        'countdownMinutes'
+    )
 
     if _has_value(json, 'origin'):
         out.origin = list(map(parse_pair, json['origin']))
 
     if _has_value(json, 'destination'):
-        out.origin = list(map(parse_pair, json['destination']))
+        out.destination = list(map(parse_pair, json['destination']))
 
     return out
+
+def parse_service(json: dict):
+    """
+    Parses a given dictionary (converted from JSON) into a rttapi.model.Service object
+
+    :param json: The dictionary data to parse
+
+    :raises ValueError: When an expected key is missing
+
+    :return: A rttapi.model.Service representation of this data
+    """
+
+    if 'error' in json:
+        raise ValueError(json['error'])
+
+    out = Service()
+
+    out.service_uid = json['serviceUid']
+    out.run_date = datetime.datetime.strptime(json['runDate'], "%Y-%m-%d").date()
+    out.service_type = json['serviceType']
+    out.is_passenger = json['isPassenger']
+    out.train_identity = json['trainIdentity']
+    out.atoc_code = json['atocCode']
+    out.atoc_name = json['atocName']
+
+    out.power_type = __assign_if_set(
+        out.power_type, json, 'powerType'
+    )
+    out.train_class = __assign_if_set(
+        out.train_class, json, 'trainClass'
+    )
+    out.sleeper = __assign_if_set(
+        out.sleeper, json, 'sleeper'
+    )
+    out.performance_monitored = __assign_if_set(
+        out.performance_monitored, json, 'performanceMonitored'
+    )
+
+    if _has_value(json, 'origin'):
+        out.origin = list(map(parse_pair, json['origin']))
+
+    if _has_value(json, 'destination'):
+        out.destination = list(map(parse_pair, json['destination']))
+
+    if _has_value(json, 'locations'):
+        out.locations = list(map(parse_location, json['locations']))
+
+    out.realtime_activated = __assign_if_set(
+        out.realtime_activated, json, 'realtimeActivated'
+    )
+
+    out.running_identity = __assign_if_set(
+        out.realtime_activated, json, 'runningIdentity'
+    )
+
+    return out
+
 
 def _has_value(json, key):
     """
@@ -194,10 +265,12 @@ def _has_value(json, key):
 
 def __assign_if_set(old_val, json, key):
     """
-    Helper method for returning the value of a dictionary entry if it exists, and returning a default value if no
+    Helper method for returning the value of a dictionary entry if it exists,
+    and returning a default value if not
 
     :param old_val: The default to return if key is not found in json.
-                    Typically the current assignment of the variable this function is being used against.
+                    Typically the current assignment of the variable this
+                    function is being used against.
     :param json:
     :param key:
 
