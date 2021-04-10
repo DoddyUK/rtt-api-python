@@ -51,14 +51,6 @@ class SearchResult:
         self.services: List[LocationContainer] = []
         """" Array of rttapi.model.LocationContainer containing the location information and service metadata """
 
-    def __str__(self):
-        return "SearchResult:\n" \
-               "    location: {}\n" \
-               "    filter: {}\n" \
-               "    services: {}\n"\
-            .format(self.location, self.filter, self.services)
-
-
 class Pair:
     """
      A TIPLOC/timing pair for a location

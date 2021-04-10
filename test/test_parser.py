@@ -277,11 +277,22 @@ class ParserTest(unittest.TestCase):
         self.assertEqual('1251', actual.gbtt_booked_arrival)
         self.assertEqual('1253', actual.gbtt_booked_departure)
 
-        # TODO check origin
         self.assertEqual(1, len(actual.origin))
+        self.assertEqual('VICTORIA', actual.origin[0].tiploc)
+        self.assertEqual('London Victoria', actual.origin[0].description)
+        self.assertEqual('113600', actual.origin[0].working_time)
+        self.assertEqual('1136', actual.origin[0].public_time)
 
-        # TODO check destination
         self.assertEqual(2, len(actual.destination))
+        self.assertEqual('SOTON', actual.destination[0].tiploc)
+        self.assertEqual('Southampton Central', actual.destination[0].description)
+        self.assertEqual('133700', actual.destination[0].working_time)
+        self.assertEqual('1337', actual.destination[0].public_time)
+
+        self.assertEqual('BOGNOR', actual.destination[1].tiploc)
+        self.assertEqual('Bognor Regis', actual.destination[1].description)
+        self.assertEqual('130400', actual.destination[1].working_time)
+        self.assertEqual('1304', actual.destination[1].public_time)
 
         self.assertEqual('1251', actual.realtime_arrival)
         self.assertEqual('1252', actual.realtime_arrival_actual)
