@@ -139,7 +139,7 @@ class RttApi:
 
         :return: A rttapi.model.SearchResult object mirroring the JSON reply
         """
-        json = self.__api.fetch_station_departure_info(self.credentials, station_code)
+        json = self.__api.fetch_station_arrival_info(self.credentials, station_code)
         return parser.parse_search(json)
 
     def fetch_service_info_datetime(self, service_uid: str, service_date: datetime.date) -> Service:
